@@ -16,7 +16,8 @@ var (
 
 type Config struct {
 	Redis redis.Config `mapstructure:"redis"`
-	Log   Log          `mapstructure:"log"`
+
+	Log Log `mapstructure:"log"`
 }
 
 func SetConfig(c Config) {
