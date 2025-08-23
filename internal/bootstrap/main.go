@@ -1,13 +1,12 @@
 package bootstrap
 
 import (
-	"fmt"
-
-	"github.com/Wuchieh/go-server/internal/config"
+	"github.com/Wuchieh/go-server/internal/utils/logger"
 )
 
 func Run() {
 	initConfig()
 
-	fmt.Println(config.GetConfig())
+	loggerSetup()
+	defer logger.Sync()
 }
