@@ -16,7 +16,8 @@ var (
 
 type Config struct {
 	Database orm.Config `mapstructure:"database"`
-	Log      Log        `mapstructure:"log"`
+
+	Log Log `mapstructure:"log"`
 }
 
 func SetConfig(c Config) {
