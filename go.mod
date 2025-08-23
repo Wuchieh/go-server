@@ -48,7 +48,3 @@ require (
 	gorm.io/driver/postgres v1.6.0 // indirect
 	gorm.io/driver/sqlite v1.6.0 // indirect
 )
-
-replace github.com/Wuchieh/go-server-redis => ../go-server-redis
-
-replace github.com/Wuchieh/go-server-orm => ../go-server-orm
