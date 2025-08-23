@@ -98,7 +98,8 @@ func (l *ZapGormLogger) Trace(_ context.Context, begin time.Time, fc func() (str
 
 func databaseSetup() error {
 	cfg := gorm.Config{
-		Logger: NewZapGormLogger(logger.GetLogger()),
+		Logger:      NewZapGormLogger(logger.GetLogger()),
+		PrepareStmt: true,
 	}
 	return orm.Setup(config.GetConfig().Database, &cfg)
 }
