@@ -1,7 +1,6 @@
 package logger
 
 import (
-	"fmt"
 	"os"
 	"time"
 
@@ -116,7 +115,7 @@ func Debug(msg string, fields ...zap.Field) {
 }
 
 func Debugf(format string, a ...any) {
-	log.Debug(fmt.Sprintf(format, a...))
+	log.Sugar().Debugf(format, a...)
 }
 
 func Info(msg string, fields ...zap.Field) {
@@ -124,7 +123,7 @@ func Info(msg string, fields ...zap.Field) {
 }
 
 func Infof(format string, a ...any) {
-	log.Info(fmt.Sprintf(format, a...))
+	log.Sugar().Infof(format, a...)
 }
 
 func Warn(msg string, fields ...zap.Field) {
@@ -132,7 +131,7 @@ func Warn(msg string, fields ...zap.Field) {
 }
 
 func Warnf(format string, a ...any) {
-	log.Warn(fmt.Sprintf(format, a...))
+	log.Sugar().Warnf(format, a...)
 }
 
 func Error(msg string, fields ...zap.Field) {
@@ -140,7 +139,7 @@ func Error(msg string, fields ...zap.Field) {
 }
 
 func Errorf(format string, a ...any) {
-	log.Error(fmt.Sprintf(format, a...))
+	log.Sugar().Errorf(format, a...)
 }
 
 func Sync() {
