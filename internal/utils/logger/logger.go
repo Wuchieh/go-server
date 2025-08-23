@@ -142,6 +142,10 @@ func Errorf(format string, a ...any) {
 	log.Sugar().Errorf(format, a...)
 }
 
+func GetLog() *zap.Logger {
+	return log
+}
+
 func Sync() {
 	log.Sync()
 }
