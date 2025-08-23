@@ -5,10 +5,10 @@ import (
 	"github.com/Wuchieh/go-server/internal/config"
 )
 
-func setupDatabase() error {
+func databaseSetup() error {
 	return orm.Setup(config.GetConfig().Database)
 }
 
-func closeDatabase() error {
+func databaseClose() error {
 	return orm.Close()
 }
