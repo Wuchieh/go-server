@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/Wuchieh/go-server-redis"
 	"github.com/duke-git/lancet/v2/slice"
 )
 
@@ -14,7 +15,8 @@ var (
 )
 
 type Config struct {
-	Log Log `mapstructure:"log"`
+	Redis redis.Config `mapstructure:"redis"`
+	Log   Log          `mapstructure:"log"`
 }
 
 func SetConfig(c Config) {
@@ -66,6 +68,7 @@ func getMapStructure(t reflect.Type, tag string) []string {
 
 func GetDefault() Config {
 	return Config{
+		Redis: redis.GetDefaultConfig(),
 		Log: Log{
 			Level:      LogLevelInfo,
 			Format:     LogFormatJson,
