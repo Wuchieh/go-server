@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"strings"
 
+	orm "github.com/Wuchieh/go-server-orm"
 	"github.com/duke-git/lancet/v2/slice"
 )
 
@@ -14,7 +15,8 @@ var (
 )
 
 type Config struct {
-	Log Log `mapstructure:"log"`
+	Database orm.Config `mapstructure:"database"`
+	Log      Log        `mapstructure:"log"`
 }
 
 func SetConfig(c Config) {
@@ -66,6 +68,9 @@ func getMapStructure(t reflect.Type, tag string) []string {
 
 func GetDefault() Config {
 	return Config{
+		Database: orm.GetDefaultConfig(
+			orm.DatabaseTypeSQLite,
+		),
 		Log: Log{
 			Level:      LogLevelInfo,
 			Format:     LogFormatJson,
