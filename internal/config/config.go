@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/Wuchieh/go-server-mongo"
 	"github.com/duke-git/lancet/v2/slice"
 )
 
@@ -15,6 +16,8 @@ var (
 
 type Config struct {
 	Log Log `mapstructure:"log"`
+
+	Mongo mongo.Config `mapstructure:"mongo"`
 }
 
 func SetConfig(c Config) {
@@ -66,6 +69,7 @@ func getMapStructure(t reflect.Type, tag string) []string {
 
 func GetDefault() Config {
 	return Config{
+		Mongo: mongo.GetDefaultConfig(),
 		Log: Log{
 			Level:      LogLevelInfo,
 			Format:     LogFormatJson,
