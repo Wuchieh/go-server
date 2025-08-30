@@ -73,7 +73,7 @@ func createEnvConfig() error {
 	}
 
 	content := strings.Join(lines, "\n")
-	return os.WriteFile(".env", []byte(content), 0644)
+	return os.WriteFile(flags.Env, []byte(content), 0644)
 }
 
 func createJSONConfig() error {
