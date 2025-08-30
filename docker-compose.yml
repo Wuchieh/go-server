@@ -1,0 +1,120 @@
+version: '3.8'
+
+services:
+  # PostgreSQL 資料庫
+  postgres:
+    image: postgres:16-alpine
+    container_name: go-server-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: go_server
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-postgres.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - go-server-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d go_server"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # MongoDB 資料庫
+  mongodb:
+    image: mongo:7.0-ubuntu
+    container_name: go-server-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+      MONGO_INITDB_DATABASE: go_server
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./scripts/init-mongo.js:/docker-entrypoint-initdb.d/init.js:ro
+    networks:
+      - go-server-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis 快取
+  redis:
+    image: redis:7.2-alpine
+    container_name: go-server-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass redis123
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - go-server-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 可選：pgAdmin (PostgreSQL 管理工具)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: go-server-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - go-server-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # 可選：Mongo Express (MongoDB 管理工具)
+  mongo-express:
+    image: mongo-express:latest
+    container_name: go-server-mongo-express
+    restart: unless-stopped
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin123
+      ME_CONFIG_MONGODB_URL: mongodb://admin:admin123@mongodb:27017/
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: admin123
+    ports:
+      - "8081:8081"
+    networks:
+      - go-server-network
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+    driver: local
+  mongodb_data:
+    driver: local
+  redis_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+
+networks:
+  go-server-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

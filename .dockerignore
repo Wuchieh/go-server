@@ -1,0 +1,53 @@
+# Git 相關
+.git
+.gitignore
+.github
+
+# IDE 相關
+.idea
+.vscode
+*.swp
+*.swo
+
+# 編譯產物
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# 測試相關
+*.test
+*.out
+coverage.html
+
+# 日誌文件
+*.log
+
+# 環境變數文件
+.env
+.env.local
+.env.*.local
+
+# 依賴目錄
+vendor/
+
+# 文檔
+README.md
+docs/
+
+# Makefile
+Makefile
+
+# Docker 相關
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# 腳本目錄
+scripts/
+
+# 其他
+.DS_Store
+Thumbs.db
