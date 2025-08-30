@@ -7,6 +7,7 @@ import (
 
 	orm "github.com/Wuchieh/go-server-orm"
 	"github.com/Wuchieh/go-server-redis"
+	"github.com/Wuchieh/go-server-mongo"
 	"github.com/duke-git/lancet/v2/slice"
 )
 
@@ -21,6 +22,8 @@ type Config struct {
 	Redis redis.Config `mapstructure:"redis"`
 
 	Log Log `mapstructure:"log"`
+
+	Mongo mongo.Config `mapstructure:"mongo"`
 }
 
 func SetConfig(c Config) {
@@ -76,6 +79,7 @@ func GetDefault() Config {
 			orm.DatabaseTypeSQLite,
 		),
 		Redis: redis.GetDefaultConfig(),
+		Mongo: mongo.GetDefaultConfig(),
 		Log: Log{
 			Level:      LogLevelInfo,
 			Format:     LogFormatJson,
