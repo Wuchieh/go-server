@@ -3,9 +3,9 @@ module github.com/Wuchieh/go-server
 go 1.24.6
 
 require (
+	github.com/Wuchieh/go-server-mongo v0.0.3
 	github.com/Wuchieh/go-server-orm v1.0.1
 	github.com/Wuchieh/go-server-redis v1.0.0
-	github.com/Wuchieh/go-server-mongo v0.0.3
 	github.com/duke-git/lancet/v2 v2.3.7
 	github.com/joho/godotenv v1.5.1
 	github.com/redis/go-redis/v9 v9.12.1
@@ -25,13 +25,13 @@ require (
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
 	github.com/golang/snappy v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/klauspost/compress v1.18.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
 	github.com/jackc/pgx/v5 v5.7.5 // indirect
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
+	github.com/klauspost/compress v1.18.0 // indirect
 	github.com/mattn/go-sqlite3 v1.14.32 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
 	github.com/sagikazarmark/locafero v0.10.0 // indirect
