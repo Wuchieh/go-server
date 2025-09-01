@@ -1,9 +1,8 @@
 package bootstrap
 
 import (
-	"os"
-
 	"context"
+	"os"
 
 	mongo "github.com/Wuchieh/go-server-mongo"
 	"github.com/Wuchieh/go-server/internal/utils/logger"
