@@ -3,6 +3,9 @@ package bootstrap
 import (
 	"os"
 
+	"context"
+
+	mongo "github.com/Wuchieh/go-server-mongo"
 	"github.com/Wuchieh/go-server/internal/utils/logger"
 	"go.uber.org/zap"
 )
@@ -31,6 +34,16 @@ func Run() {
 		err := databaseClose()
 		if err != nil {
 			logger.Error("database close fail", zap.Error(err))
+		}
+	}()
+
+	if err := mongoSetup(); err != nil {
+		logger.Errorf("mongodb setup error: %v", err)
+	}
+	defer func() {
+		err := mongo.GetClient().Disconnect(context.Background())
+		if err != nil {
+			logger.Errorf("mongodb setup error: %v", err)
 		}
 	}()
 }
