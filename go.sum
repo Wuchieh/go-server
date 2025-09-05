@@ -1,5 +1,7 @@
 github.com/Wuchieh/go-server-redis v1.0.0 h1:O8IKmdSrBiCVL817uo7PKLwZLnkzTFs/NNbNT7zxUTQ=
 github.com/Wuchieh/go-server-redis v1.0.0/go.mod h1:/Ea19e0XdTlkK7Zcf1tveBIfQtdK2rc+R12eQy46TiE=
+github.com/Wuchieh/go-server-redis v1.0.1 h1:fqMq6cCFSr3+G9FbCv0nlPp7p40fg9NF1kSGA+NdHsc=
+github.com/Wuchieh/go-server-redis v1.0.1/go.mod h1:7jSO+YYESTTALvuznaeInaTgI2CF08GmTWJ0tfha0Wk=
 github.com/bsm/ginkgo/v2 v2.12.0 h1:Ny8MWAHyOepLGlLKYmXG4IEkioBysk6GpaRTLC8zwWs=
 github.com/bsm/ginkgo/v2 v2.12.0/go.mod h1:SwYbGRRDovPVboqFv0tPTcG1sN61LM1Z4ARdbAV9g4c=
 github.com/bsm/gomega v1.27.10 h1:yeMWxP2pV2fG3FgAODIY8EiRE3dy0aeFYt4l7wh6yKA=
