@@ -1,11 +1,11 @@
 module github.com/Wuchieh/go-server
 
-go 1.25
+go 1.25.1
 
 require (
 	github.com/Wuchieh/go-server-mongo v0.0.3
-	github.com/Wuchieh/go-server-orm v1.0.1
-	github.com/Wuchieh/go-server-redis v1.0.0
+	github.com/Wuchieh/go-server-orm v1.0.2
+	github.com/Wuchieh/go-server-redis v1.0.1
 	github.com/duke-git/lancet/v2 v2.3.7
 	github.com/joho/godotenv v1.5.1
 	github.com/redis/go-redis/v9 v9.13.0

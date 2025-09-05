@@ -4,6 +4,8 @@ github.com/Wuchieh/go-server-mongo v0.0.3 h1:/e0jZVurdHDZpZcopOuQudUHOR3AU6pwVMy
 github.com/Wuchieh/go-server-mongo v0.0.3/go.mod h1:rPkyaga4bfCPamoTjxEcNbRrtE8wplLZGujSjQPbu2U=
 github.com/Wuchieh/go-server-orm v1.0.1 h1:9T1QAj6Bw5cMkyX8RZl9jIucEuWJOjO4SWmfPG76sEk=
 github.com/Wuchieh/go-server-orm v1.0.1/go.mod h1:TK0x6U89ijt3gFFBo8n9QyT3jRTIs2EyVK+qjNIKsAI=
+github.com/Wuchieh/go-server-orm v1.0.2 h1:10iV5/CFn/Uam9b5UOIjgui1hmttnC07PzYKXi4q6Xs=
+github.com/Wuchieh/go-server-orm v1.0.2/go.mod h1:nTIc+byKVK5JRlyLStJchfGxQLnUxjfHhF6vLrMNd4U=
 github.com/Wuchieh/go-server-redis v1.0.0 h1:O8IKmdSrBiCVL817uo7PKLwZLnkzTFs/NNbNT7zxUTQ=
 github.com/Wuchieh/go-server-redis v1.0.0/go.mod h1:/Ea19e0XdTlkK7Zcf1tveBIfQtdK2rc+R12eQy46TiE=
 github.com/Wuchieh/go-server-redis v1.0.1 h1:fqMq6cCFSr3+G9FbCv0nlPp7p40fg9NF1kSGA+NdHsc=
