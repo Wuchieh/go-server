@@ -6,14 +6,13 @@ import (
 
 	"github.com/Wuchieh/go-server/internal/config"
 	"github.com/Wuchieh/go-server/internal/utils/logger"
-	"go.uber.org/zap"
 )
 
 func TestLogger(t *testing.T) {
 	os.Mkdir("./log", os.ModePerm)
 	cfg := config.Log{
 		Level:      "",
-		Format:     "",
+		Format:     "json",
 		OutputPath: "./log/log.log",
 		ErrorPath:  "./log/error.log",
 	}
@@ -22,12 +21,7 @@ func TestLogger(t *testing.T) {
 
 	defer logger.Sync()
 
-	for i := 0; i < 10000; i++ {
-		logger.Info("failed to fetch URL",
-			zap.Any("data", config.Config{}),
-		)
+	logger.Info("failed to fetch URL")
 
-		logger.Error("failed to fetch URL",
-			zap.Any("data", config.Config{}))
-	}
+	logger.Error("failed to fetch URL")
 }
