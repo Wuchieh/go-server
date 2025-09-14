@@ -9,7 +9,6 @@ func Run() {
 	defer func() {
 		_ = logger.Sync()
 	}()
-	defer logger.Sync()
 
 	if err := databaseSetup(); err != nil {
 		logger.Fatal("database setup fail:", err)
