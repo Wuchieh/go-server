@@ -53,7 +53,7 @@ func (s *Server) RunWithConfig(ctx context.Context, config *Config) error {
 		ReadTimeout:    wtype.Fallback(config.ReadTimeout, 30*time.Second),
 		WriteTimeout:   wtype.Fallback(config.WriteTimeout, 30*time.Second),
 		IdleTimeout:    wtype.Fallback(config.IdleTimeout, 60*time.Second),
-		MaxHeaderBytes: wtype.Fallback(config.MaxHeaderBytes, 1<<20), // 1MB
+		MaxHeaderBytes: wtype.Fallback(config.MaxHeaderBytes, int(wtype.MB)), // 1MB
 	}
 
 	return s.serve(ctx, func() error {

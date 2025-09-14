@@ -8,7 +8,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/spf13/cobra v1.10.1
 	github.com/spf13/viper v1.21.0
-	github.com/wuchieh/wtype v1.7.1
+	github.com/wuchieh/wtype v1.7.2
 	go.uber.org/zap v1.27.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 )
