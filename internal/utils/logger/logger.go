@@ -10,9 +10,61 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
-var log *zap.Logger
+var log *Log
 
-func Setup(cfg config.Log) {
+type Log struct {
+	z *zap.Logger
+}
+
+func (l *Log) Sync() error {
+	return l.z.Sync()
+}
+
+func (l *Log) Debug(args ...any) {
+	l.z.Sugar().Debug(args...)
+}
+
+func (l *Log) Debugf(format string, args ...any) {
+	l.z.Sugar().Debugf(format, args...)
+}
+
+func (l *Log) Info(args ...any) {
+	l.z.Sugar().Info(args...)
+}
+
+func (l *Log) Infof(format string, args ...any) {
+	l.z.Sugar().Infof(format, args...)
+}
+
+func (l *Log) Warn(args ...any) {
+	l.z.Sugar().Warn(args...)
+}
+
+func (l *Log) Warnf(format string, args ...any) {
+	l.z.Sugar().Warnf(format, args...)
+}
+
+func (l *Log) Error(args ...any) {
+	l.z.Sugar().Error(args...)
+}
+
+func (l *Log) Errorf(format string, args ...any) {
+	l.z.Sugar().Errorf(format, args...)
+}
+
+func (l *Log) Fatal(args ...any) {
+	l.z.Sugar().Fatal(args...)
+}
+
+func (l *Log) Fatalln(args ...any) {
+	l.z.Sugar().Fatalln(args...)
+}
+
+func (l *Log) Fatalf(format string, args ...any) {
+	l.z.Sugar().Fatalf(format, args...)
+}
+
+func New(cfg config.Log) *Log {
 	var zapConfig zap.Config
 
 	switch cfg.Level {
@@ -41,7 +93,7 @@ func Setup(cfg config.Log) {
 	// encoder
 	var encoder zapcore.Encoder
 	switch cfg.Format {
-	case config.LogFormatJson:
+	case config.LogFormatJSON:
 		encoder = zapcore.NewJSONEncoder(zapConfig.EncoderConfig)
 	case config.LogFormatConsole:
 		encoder = zapcore.NewConsoleEncoder(zapConfig.EncoderConfig)
@@ -101,51 +153,12 @@ func Setup(cfg config.Log) {
 
 	// 合併 core
 	core := zapcore.NewTee(cores...)
-	log = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1))
 
-	zap.ReplaceGlobals(log)
+	return &Log{z: zap.New(core, zap.AddCaller(), zap.AddCallerSkip(2))}
 }
 
-func GetLogger() *zap.Logger {
-	return log
-}
-
-func Debug(msg string, fields ...zap.Field) {
-	log.Debug(msg, fields...)
-}
-
-func Debugf(format string, a ...any) {
-	log.Sugar().Debugf(format, a...)
-}
-
-func Info(msg string, fields ...zap.Field) {
-	log.Info(msg, fields...)
-}
-
-func Infof(format string, a ...any) {
-	log.Sugar().Infof(format, a...)
-}
-
-func Warn(msg string, fields ...zap.Field) {
-	log.Warn(msg, fields...)
-}
-
-func Warnf(format string, a ...any) {
-	log.Sugar().Warnf(format, a...)
-}
-
-func Error(msg string, fields ...zap.Field) {
-	log.Error(msg, fields...)
-}
-
-func Errorf(format string, a ...any) {
-	log.Sugar().Errorf(format, a...)
-}
-
-func GetLog() *zap.Logger {
-	return log
-}
-
-func Sync() {
-	log.Sync()
+func Setup(cfg config.Log) {
+	z := New(cfg)
+	log = z
+	zap.ReplaceGlobals(z.z)
 }

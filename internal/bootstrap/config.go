@@ -66,14 +66,14 @@ func createEnvConfig() error {
 	keys := config.GetMapStructure()
 	envKeys := config.GetMapStructureForEnv(keys)
 
-	var lines []string
+	lines := make([]string, 0, len(keys))
 	for i, key := range keys {
 		value := getValueByPath(cfg, key)
 		lines = append(lines, fmt.Sprintf("%s=%v", envKeys[i], value))
 	}
 
 	content := strings.Join(lines, "\n")
-	return os.WriteFile(flags.Env, []byte(content), 0644)
+	return os.WriteFile(flags.Env, []byte(content), 0o644)
 }
 
 func createJSONConfig() error {

@@ -1,26 +1,23 @@
 package bootstrap
 
-import (
-	"os"
-
-	"github.com/Wuchieh/go-server/internal/utils/logger"
-	"go.uber.org/zap"
-)
+import "github.com/Wuchieh/go-server/internal/utils/logger"
 
 func Run() {
 	initConfig()
 
 	loggerSetup()
+	defer func() {
+		_ = logger.Sync()
+	}()
 	defer logger.Sync()
 
 	if err := databaseSetup(); err != nil {
-		logger.Errorf("database setup fail: %v", err)
-		os.Exit(1)
+		logger.Fatal("database setup fail:", err)
 	}
 	defer func() {
 		err := databaseClose()
 		if err != nil {
-			logger.Error("database close fail", zap.Error(err))
+			logger.Error("database close fail:", err)
 		}
 	}()
 }
