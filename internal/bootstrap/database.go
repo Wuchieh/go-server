@@ -7,66 +7,34 @@ import (
 	orm "github.com/Wuchieh/go-server-orm"
 	"github.com/Wuchieh/go-server/internal/config"
 	"github.com/Wuchieh/go-server/internal/utils/logger"
-	"go.uber.org/zap"
 	"gorm.io/gorm"
 	gormLogger "gorm.io/gorm/logger"
 )
 
-type ZapGormLogger struct {
+type log struct {
 	gormLogger.Config
-	zapLogger *zap.Logger
+	level gormLogger.LogLevel
 }
 
-func NewZapGormLogger(zapLogger *zap.Logger) *ZapGormLogger {
-	return &ZapGormLogger{
-		Config: gormLogger.Config{
-			SlowThreshold: time.Second, // 超過多久算慢查詢
-			LogLevel: func() gormLogger.LogLevel {
-				switch config.GetConfig().Log.Level {
-				case config.LogLevelInfo,
-					config.LogLevelDebug:
-					return gormLogger.Info
-				case config.LogLevelWarn:
-					return gormLogger.Warn
-				case config.LogLevelError:
-					return gormLogger.Error
-				default:
-					return gormLogger.Silent
-				}
-			}(), // 記錄等級
-			IgnoreRecordNotFoundError: true, // 忽略 gorm.ErrRecordNotFound
-			Colorful:                  false,
-		},
-		zapLogger: zapLogger,
-	}
+func (l log) LogMode(level gormLogger.LogLevel) gormLogger.Interface {
+	l.level = level
+	return l
 }
 
-func (l *ZapGormLogger) LogMode(level gormLogger.LogLevel) gormLogger.Interface {
-	newLogger := *l
-	newLogger.LogLevel = level
-	return &newLogger
+func (l log) Info(_ context.Context, s string, i ...interface{}) {
+	logger.GetLogger().Infof("[GORM] "+s, i...)
 }
 
-func (l *ZapGormLogger) Info(_ context.Context, msg string, data ...interface{}) {
-	if l.LogLevel >= gormLogger.Info {
-		l.zapLogger.Sugar().Infof(msg, data...)
-	}
+func (l log) Warn(_ context.Context, s string, i ...interface{}) {
+	logger.GetLogger().Warnf("[GORM] "+s, i...)
 }
 
-func (l *ZapGormLogger) Warn(_ context.Context, msg string, data ...interface{}) {
-	if l.LogLevel >= gormLogger.Warn {
-		l.zapLogger.Sugar().Warnf(msg, data...)
-	}
+func (l log) Error(_ context.Context, s string, i ...interface{}) {
+	logger.GetLogger().Errorf("[GORM] "+s, i...)
 }
 
-func (l *ZapGormLogger) Error(_ context.Context, msg string, data ...interface{}) {
-	if l.LogLevel >= gormLogger.Error {
-		l.zapLogger.Sugar().Errorf(msg, data...)
-	}
-}
-
-func (l *ZapGormLogger) Trace(_ context.Context, begin time.Time, fc func() (string, int64), err error) {
-	if l.LogLevel <= gormLogger.Silent {
+func (l log) Trace(_ context.Context, begin time.Time, fc func() (sql string, rowsAffected int64), err error) {
+	if l.level <= gormLogger.Silent {
 		return
 	}
 
@@ -74,31 +42,40 @@ func (l *ZapGormLogger) Trace(_ context.Context, begin time.Time, fc func() (str
 	sql, rows := fc()
 
 	switch {
-	case err != nil && l.LogLevel >= gormLogger.Error:
-		l.zapLogger.Error("sql error",
-			zap.Error(err),
-			zap.Duration("elapsed", elapsed),
-			zap.String("sql", sql),
-			zap.Int64("rows", rows),
-		)
-	case elapsed > l.SlowThreshold && l.SlowThreshold != 0 && l.LogLevel >= gormLogger.Warn:
-		l.zapLogger.Warn("slow sql",
-			zap.Duration("elapsed", elapsed),
-			zap.String("sql", sql),
-			zap.Int64("rows", rows),
-		)
-	case l.LogLevel == gormLogger.Info:
-		l.zapLogger.Info("sql",
-			zap.Duration("elapsed", elapsed),
-			zap.String("sql", sql),
-			zap.Int64("rows", rows),
-		)
+	case err != nil && l.level >= gormLogger.Error:
+		logger.GetLogger().Errorf("[GORM] trace error: %v, elapsed: %v, rows: %d, sql: %s", err, elapsed, rows, sql)
+	case elapsed > l.SlowThreshold && l.SlowThreshold != 0 && l.level >= gormLogger.Warn:
+		logger.GetLogger().Warnf("[GORM] trace elapsed: %v, rows: %d, sql: %s", elapsed, rows, sql)
+	case l.level == gormLogger.Info:
+		logger.GetLogger().Infof("[GORM] trace elapsed: %v, rows: %d, sql: %s", elapsed, rows, sql)
+
 	}
 }
 
 func databaseSetup() error {
+	l := &log{
+		Config: gormLogger.Config{
+			SlowThreshold:             200 * time.Millisecond, // 慢查詢閾值
+			IgnoreRecordNotFoundError: true,                   // 預設忽略 gorm.ErrRecordNotFound
+			ParameterizedQueries:      false,                  // 可以改 true 來隱藏參數
+		},
+	}
+
+	switch config.GetConfig().Log.Level {
+	case config.LogLevelDebug:
+		l.level = gormLogger.Info
+	case config.LogLevelInfo:
+		l.level = gormLogger.Info
+	case config.LogLevelWarn:
+		l.level = gormLogger.Warn
+	case config.LogLevelError:
+		l.level = gormLogger.Error
+	default:
+		l.level = gormLogger.Error // 預設至少輸出 error
+	}
+
 	cfg := gorm.Config{
-		Logger:      NewZapGormLogger(logger.GetLogger()),
+		Logger:      l,
 		PrepareStmt: true,
 	}
 	return orm.Setup(config.GetConfig().Database, &cfg)
