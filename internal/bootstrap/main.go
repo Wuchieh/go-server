@@ -16,12 +16,12 @@ func Run() {
 	}()
 
 	if err := mongoSetup(); err != nil {
-		logger.Errorf("mongodb setup error: %v", err)
+		logger.Fatalf("mongodb setup error: %v", err)
 	}
 	defer func() {
 		err := mongo.GetClient().Disconnect(context.Background())
 		if err != nil {
-			logger.Errorf("mongodb setup error: %v", err)
+			logger.Errorf("mongodb disconnect error: %v", err)
 		}
 	}()
 }
