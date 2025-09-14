@@ -12,7 +12,7 @@ const (
 type LogFormat = string
 
 const (
-	LogFormatJson    LogFormat = "json"
+	LogFormatJSON    LogFormat = "json"
 	LogFormatConsole LogFormat = "console"
 )
 

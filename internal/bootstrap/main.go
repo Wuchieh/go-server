@@ -10,7 +10,9 @@ func Run() {
 	initConfig()
 
 	loggerSetup()
-	defer logger.Sync()
+	defer func() {
+		_ = logger.Sync()
+	}()
 
 	if err := redisSetup(); err != nil {
 		logger.Errorf("redis setup failed: %v", err)
