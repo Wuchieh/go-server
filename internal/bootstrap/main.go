@@ -25,7 +25,7 @@ func Run() {
 		}
 	}()
 	defer func() {
-		if err := serverStart(ctx); err != nil {
+		if err := serverStop(ctx); err != nil {
 			logger.Error(err)
 		}
 		cancel()

@@ -2,6 +2,4 @@ package server
 
 import "errors"
 
-var (
-	ErrServerRunning = errors.New("server is already running")
-)
+var ErrServerRunning = errors.New("server is already running")
