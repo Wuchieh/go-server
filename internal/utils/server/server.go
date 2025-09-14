@@ -12,11 +12,11 @@ import (
 )
 
 type Config struct {
-	Addr           string
-	ReadTimeout    time.Duration
-	WriteTimeout   time.Duration
-	IdleTimeout    time.Duration
-	MaxHeaderBytes int
+	Addr           string        `mapstructure:"addr"`
+	ReadTimeout    time.Duration `mapstructure:"read_timeout"`
+	WriteTimeout   time.Duration `mapstructure:"write_timeout"`
+	IdleTimeout    time.Duration `mapstructure:"idle_timeout"`
+	MaxHeaderBytes int           `mapstructure:"max_header_bytes"`
 }
 
 type Server struct {
