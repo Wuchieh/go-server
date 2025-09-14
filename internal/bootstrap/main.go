@@ -6,9 +6,6 @@ import (
 	mongo "github.com/Wuchieh/go-server-mongo"
 	"github.com/Wuchieh/go-server/internal/utils/logger"
 )
-import (
-	"github.com/Wuchieh/go-server/internal/utils/logger"
-)
 
 func Run() {
 	initConfig()
