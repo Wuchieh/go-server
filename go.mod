@@ -5,8 +5,10 @@ go 1.25.1
 require (
 	github.com/Wuchieh/go-server-mongo v0.0.3
 	github.com/Wuchieh/go-server-orm v1.0.2
+	github.com/Wuchieh/go-server-redis v1.0.1
 	github.com/duke-git/lancet/v2 v2.3.7
 	github.com/joho/godotenv v1.5.1
+	github.com/redis/go-redis/v9 v9.14.0
 	github.com/spf13/cobra v1.10.1
 	github.com/spf13/viper v1.20.1
 	go.uber.org/zap v1.27.0
@@ -16,6 +18,8 @@ require (
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
+	github.com/cespare/xxhash/v2 v2.3.0 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/go-sql-driver/mysql v1.9.3 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
