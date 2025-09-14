@@ -4,8 +4,11 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+	"time"
 
+	"github.com/Wuchieh/go-server/internal/utils/server"
 	"github.com/duke-git/lancet/v2/slice"
+	"github.com/wuchieh/wtype"
 )
 
 var (
@@ -14,7 +17,8 @@ var (
 )
 
 type Config struct {
-	Log Log `mapstructure:"log"`
+	Server server.Config `mapstructure:"server"`
+	Log    Log           `mapstructure:"log"`
 }
 
 func SetConfig(c Config) {
@@ -66,6 +70,13 @@ func getMapStructure(t reflect.Type, tag string) []string {
 
 func GetDefault() Config {
 	return Config{
+		Server: server.Config{
+			Addr:           "localhost:8080",
+			ReadTimeout:    30 * time.Second,
+			WriteTimeout:   30 * time.Second,
+			IdleTimeout:    60 * time.Second,
+			MaxHeaderBytes: int(wtype.MB),
+		},
 		Log: Log{
 			Level:      LogLevelInfo,
 			Format:     LogFormatJSON,
