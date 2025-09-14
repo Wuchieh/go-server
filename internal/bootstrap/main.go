@@ -6,6 +6,9 @@ import (
 	mongo "github.com/Wuchieh/go-server-mongo"
 	"github.com/Wuchieh/go-server/internal/utils/logger"
 )
+import (
+	"github.com/Wuchieh/go-server/internal/utils/logger"
+)
 
 func Run() {
 	initConfig()
@@ -32,6 +35,15 @@ func Run() {
 		err := mongo.GetClient().Disconnect(context.Background())
 		if err != nil {
 			logger.Errorf("mongodb disconnect error: %v", err)
+		}
+	}()
+
+	if err := redisSetup(); err != nil {
+		logger.Fatalf("redis setup failed: %v", err)
+	}
+	defer func() {
+		if err := closeRedis(); err != nil {
+			logger.Errorf("redis close failed: %v", err)
 		}
 	}()
 }
