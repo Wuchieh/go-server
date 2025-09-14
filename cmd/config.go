@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"log"
-	"os"
 
 	"github.com/Wuchieh/go-server/internal/bootstrap"
 	"github.com/spf13/cobra"
@@ -22,8 +21,7 @@ var (
 		Run: func(cmd *cobra.Command, args []string) {
 			configType := args[0]
 			if err := bootstrap.CreateConfigFile(configType); err != nil {
-				log.Printf("創建設定檔失敗: %v\n", err)
-				os.Exit(1)
+				log.Fatalln("創建設定檔失敗:", err)
 			}
 			log.Printf("設定檔創建成功\n")
 		},

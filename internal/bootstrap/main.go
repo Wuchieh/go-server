@@ -11,7 +11,9 @@ func Run() {
 	initConfig()
 
 	loggerSetup()
-	defer logger.Sync()
+	defer func() {
+		_ = logger.Sync()
+	}()
 
 	if err := mongoSetup(); err != nil {
 		logger.Errorf("mongodb setup error: %v", err)
