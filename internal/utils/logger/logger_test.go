@@ -30,5 +30,4 @@ func TestLogger(t *testing.T) {
 		logger.Error("failed to fetch URL",
 			zap.Any("data", config.Config{}))
 	}
-
 }

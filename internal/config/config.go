@@ -68,7 +68,7 @@ func GetDefault() Config {
 	return Config{
 		Log: Log{
 			Level:      LogLevelInfo,
-			Format:     LogFormatJson,
+			Format:     LogFormatJSON,
 			Console:    true,
 			OutputPath: "./logs/log.log",
 			ErrorPath:  "./logs/error.log",

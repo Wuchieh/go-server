@@ -41,7 +41,7 @@ func Setup(cfg config.Log) {
 	// encoder
 	var encoder zapcore.Encoder
 	switch cfg.Format {
-	case config.LogFormatJson:
+	case config.LogFormatJSON:
 		encoder = zapcore.NewJSONEncoder(zapConfig.EncoderConfig)
 	case config.LogFormatConsole:
 		encoder = zapcore.NewConsoleEncoder(zapConfig.EncoderConfig)
@@ -147,5 +147,5 @@ func GetLog() *zap.Logger {
 }
 
 func Sync() {
-	log.Sync()
+	_ = log.Sync()
 }
