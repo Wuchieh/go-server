@@ -2,9 +2,8 @@ package bootstrap
 
 import (
 	"context"
-	"os"
+	"fmt"
 	"os/signal"
-	"syscall"
 
 	"github.com/Wuchieh/go-server/internal/utils/logger"
 )
@@ -17,21 +16,23 @@ func Run() {
 		_ = logger.Sync()
 	}()
 
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, stop := signal.NotifyContext(context.Background())
+	defer stop()
+
+	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
+
 	go func() {
 		if err := serverStart(ctx); err != nil {
-			logger.Fatal(err)
+			logger.Error(fmt.Errorf("server start error: %v", err))
 		}
+		cancel()
 	}()
 	defer func() {
 		if err := serverStop(ctx); err != nil {
 			logger.Error(err)
 		}
-		cancel()
 	}()
 
-	sc := make(chan os.Signal, 1)
-	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
-	<-sc
+	<-ctx.Done()
 }
